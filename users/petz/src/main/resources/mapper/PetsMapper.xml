@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ee.pet.mapper.PetsMapper">
+    <select id="pagequrry" resultType="com.ee.pet.entity.Pets">
+        select * from pets
+        <where>
+            <if test="age1!=null and age1 !=''">
+            and age between #{age1} and #{age2}
+            </if>
+            <if test="bodytype!=null and bodytype !=''">
+            and bodytype=#{bodytype}
+            </if>
+            <if test="catOrDog!=null and catOrDog !=''">
+            and cat_or_dog=#{catOrDog}
+            </if>
+            <if test="gender!=null and gender !=''">
+            and gender=#{gender}
+            </if>
+            <if test="max!=null and max !=''">
+           and adoption_info like concat('%',#{max},'%') or name like concat('%',#{max},'%') or breed like concat('%',#{max},'%')
+            </if>
+                 and status=#{status}
+        </where>
+        ORDER BY pet_id
+        LIMIT #{startpage}, #{pagesize}
+    </select>
+    <select id="pagequrry2" resultType="java.lang.Integer">
+        select count(*) from pets
+        <where>
+            <if test="age1!=null and age1 !=''">
+                and age between #{age1} and #{age2}
+            </if>
+            <if test="bodytype!=null and bodytype !=''">
+                and bodytype=#{bodytype}
+            </if>
+            <if test="catOrDog!=null and catOrDog !=''">
+                and cat_or_dog=#{catOrDog}
+            </if>
+            <if test="gender!=null and gender !=''">
+                and gender=#{gender}
+            </if>
+            <if test="max!=null and max !=''">
+                and adoption_info like concat('%',#{max},'%') or name like concat('%',#{max},'%') or breed like concat('%',#{max},'%')
+            </if>
+            and status=#{status}
+        </where>
+    </select>
+
+</mapper>
