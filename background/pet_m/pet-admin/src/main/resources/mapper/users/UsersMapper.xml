@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ee.users.mapper.UsersMapper">
+    
+    <resultMap type="Users" id="UsersResult">
+        <result property="userId"    column="user_id"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="icon"    column="icon"    />
+        <result property="email"    column="email"    />
+        <result property="phone"    column="phone"    />
+        <result property="gender"    column="gender"    />
+        <result property="personality"    column="personality"    />
+        <result property="children"    column="children"    />
+        <result property="age"    column="age"    />
+        <result property="wage"    column="wage"    />
+        <result property="experience"    column="experience"    />
+        <result property="catOrDog"    column="cat_or_dog"    />
+        <result property="timewithpet"    column="timewithpet"    />
+        <result property="cleanwithpet"    column="cleanwithpet"    />
+        <result property="bodytypewithpet"    column="bodytypewithpet"    />
+        <result property="environment"    column="environment"    />
+        <result property="petgender"    column="petgender"    />
+        <result property="questionFk"    column="question_fk"    />
+    </resultMap>
+
+    <sql id="selectUsersVo">
+        select user_id, username, password, icon, email, phone, gender, personality, children, age, wage, experience, cat_or_dog, timewithpet, cleanwithpet, bodytypewithpet, environment, petgender, question_fk from users
+    </sql>
+
+    <select id="selectUsersList" parameterType="Users" resultMap="UsersResult">
+        <include refid="selectUsersVo"/>
+        <where>  
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="children != null "> and children = #{children}</if>
+            <if test="age != null "> and age = #{age}</if>
+        </where>
+    </select>
+    
+    <select id="selectUsersByUserId" parameterType="Long" resultMap="UsersResult">
+        <include refid="selectUsersVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertUsers" parameterType="Users" useGeneratedKeys="true" keyProperty="userId">
+        insert into users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null and username != ''">username,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="icon != null">icon,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="gender != null">gender,</if>
+            <if test="personality != null">personality,</if>
+            <if test="children != null">children,</if>
+            <if test="age != null">age,</if>
+            <if test="wage != null">wage,</if>
+            <if test="experience != null">experience,</if>
+            <if test="catOrDog != null">cat_or_dog,</if>
+            <if test="timewithpet != null">timewithpet,</if>
+            <if test="cleanwithpet != null">cleanwithpet,</if>
+            <if test="bodytypewithpet != null">bodytypewithpet,</if>
+            <if test="environment != null">environment,</if>
+            <if test="petgender != null">petgender,</if>
+            <if test="questionFk != null">question_fk,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="personality != null">#{personality},</if>
+            <if test="children != null">#{children},</if>
+            <if test="age != null">#{age},</if>
+            <if test="wage != null">#{wage},</if>
+            <if test="experience != null">#{experience},</if>
+            <if test="catOrDog != null">#{catOrDog},</if>
+            <if test="timewithpet != null">#{timewithpet},</if>
+            <if test="cleanwithpet != null">#{cleanwithpet},</if>
+            <if test="bodytypewithpet != null">#{bodytypewithpet},</if>
+            <if test="environment != null">#{environment},</if>
+            <if test="petgender != null">#{petgender},</if>
+            <if test="questionFk != null">#{questionFk},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUsers" parameterType="Users">
+        update users
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="personality != null">personality = #{personality},</if>
+            <if test="children != null">children = #{children},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="wage != null">wage = #{wage},</if>
+            <if test="experience != null">experience = #{experience},</if>
+            <if test="catOrDog != null">cat_or_dog = #{catOrDog},</if>
+            <if test="timewithpet != null">timewithpet = #{timewithpet},</if>
+            <if test="cleanwithpet != null">cleanwithpet = #{cleanwithpet},</if>
+            <if test="bodytypewithpet != null">bodytypewithpet = #{bodytypewithpet},</if>
+            <if test="environment != null">environment = #{environment},</if>
+            <if test="petgender != null">petgender = #{petgender},</if>
+            <if test="questionFk != null">question_fk = #{questionFk},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteUsersByUserId" parameterType="Long">
+        delete from users where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteUsersByUserIds" parameterType="String">
+        delete from users where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

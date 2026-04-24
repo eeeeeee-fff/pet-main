@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ee.donations.mapper.DonationsMapper">
+    
+    <resultMap type="Donations" id="DonationsResult">
+        <result property="donationId"    column="donation_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="name"    column="name"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="personality"    column="personality"    />
+        <result property="breed"    column="breed"    />
+        <result property="catOrDog"    column="cat_or_dog"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="vaccination"    column="vaccination"    />
+        <result property="adoptionInfo"    column="adoption_info"    />
+        <result property="donorName"    column="donor_name"    />
+        <result property="donorContact"    column="donor_contact"    />
+        <result property="donationDate"    column="donation_date"    />
+        <result property="passDate"    column="pass_date"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectDonationsVo">
+        select donation_id, user_id, name, gender, age, personality, breed, cat_or_dog, image_url, vaccination, adoption_info, donor_name, donor_contact, donation_date, pass_date, status from donations
+    </sql>
+
+    <select id="selectDonationsList" parameterType="Donations" resultMap="DonationsResult">
+        <include refid="selectDonationsVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="personality != null  and personality != ''"> and personality = #{personality}</if>
+            <if test="breed != null  and breed != ''"> and breed = #{breed}</if>
+            <if test="catOrDog != null  and catOrDog != ''"> and cat_or_dog = #{catOrDog}</if>
+            <if test="imageUrl != null  and imageUrl != ''"> and image_url = #{imageUrl}</if>
+            <if test="vaccination != null "> and vaccination = #{vaccination}</if>
+            <if test="adoptionInfo != null  and adoptionInfo != ''"> and adoption_info = #{adoptionInfo}</if>
+            <if test="donorName != null  and donorName != ''"> and donor_name like concat('%', #{donorName}, '%')</if>
+            <if test="donorContact != null  and donorContact != ''"> and donor_contact = #{donorContact}</if>
+            <if test="donationDate != null "> and donation_date = #{donationDate}</if>
+            <if test="passDate != null "> and pass_date = #{passDate}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectDonationsByDonationId" parameterType="Long" resultMap="DonationsResult">
+        <include refid="selectDonationsVo"/>
+        where donation_id = #{donationId}
+    </select>
+
+    <insert id="insertDonations" parameterType="Donations">
+        insert into donations
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="donationId != null">donation_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="personality != null">personality,</if>
+            <if test="breed != null">breed,</if>
+            <if test="catOrDog != null">cat_or_dog,</if>
+            <if test="imageUrl != null">image_url,</if>
+            <if test="vaccination != null">vaccination,</if>
+            <if test="adoptionInfo != null">adoption_info,</if>
+            <if test="donorName != null and donorName != ''">donor_name,</if>
+            <if test="donorContact != null and donorContact != ''">donor_contact,</if>
+            <if test="donationDate != null">donation_date,</if>
+            <if test="passDate != null">pass_date,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="donationId != null">#{donationId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="personality != null">#{personality},</if>
+            <if test="breed != null">#{breed},</if>
+            <if test="catOrDog != null">#{catOrDog},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="vaccination != null">#{vaccination},</if>
+            <if test="adoptionInfo != null">#{adoptionInfo},</if>
+            <if test="donorName != null and donorName != ''">#{donorName},</if>
+            <if test="donorContact != null and donorContact != ''">#{donorContact},</if>
+            <if test="donationDate != null">#{donationDate},</if>
+            <if test="passDate != null">#{passDate},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDonations" parameterType="Donations">
+        update donations
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="personality != null">personality = #{personality},</if>
+            <if test="breed != null">breed = #{breed},</if>
+            <if test="catOrDog != null">cat_or_dog = #{catOrDog},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="vaccination != null">vaccination = #{vaccination},</if>
+            <if test="adoptionInfo != null">adoption_info = #{adoptionInfo},</if>
+            <if test="donorName != null and donorName != ''">donor_name = #{donorName},</if>
+            <if test="donorContact != null and donorContact != ''">donor_contact = #{donorContact},</if>
+            <if test="donationDate != null">donation_date = #{donationDate},</if>
+            <if test="passDate != null">pass_date = #{passDate},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where donation_id = #{donationId}
+    </update>
+
+    <delete id="deleteDonationsByDonationId" parameterType="Long">
+        delete from donations where donation_id = #{donationId}
+    </delete>
+
+    <delete id="deleteDonationsByDonationIds" parameterType="String">
+        delete from donations where donation_id in 
+        <foreach item="donationId" collection="array" open="(" separator="," close=")">
+            #{donationId}
+        </foreach>
+    </delete>
+</mapper>

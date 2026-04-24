@@ -1,0 +1,32 @@
+.image-container {
+  width: 800px; /* 根据你想要的图片容器宽度调整 */
+  height: 800px; /* 根据你想要的图片容器高度调整 */
+  overflow: hidden;
+  margin: 50px auto; /* 上下50px间距，水平居中 */
+  position: relative;
+}
+
+.pet-image {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease; /* 设置过渡效果，让图片划入划出更平滑 */
+  background-image: linear-gradient(90deg,transparent,#fff), url(../assets/1.jpeg);  /* #fff表示需要兼容的底色*/
+  background-size: 40%, contain;	/* 40%表达需要渐变的宽度*/
+  background-repeat: no-repeat; 
+  background-position: right;  /* right表示渐变对齐的方向*/
+
+  }
+
+.image-container:hover .pet-image {
+  transform: scale(1.1); /* 鼠标悬停时图片放大一点，形成划入效果 */
+}
+
+.image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ee.applications.mapper.AdoptionApplicationsMapper">
+    
+    <resultMap type="AdoptionApplications" id="AdoptionApplicationsResult">
+        <result property="applicationId"    column="application_id"    />
+        <result property="petId"    column="pet_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="applicantName"    column="applicant_name"    />
+        <result property="applicantContact"    column="applicant_contact"    />
+        <result property="applicantAddress"    column="applicant_address"    />
+        <result property="applicantAge"    column="applicant_age"    />
+        <result property="applicationDate"    column="application_date"    />
+        <result property="passDate"    column="pass_date"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectAdoptionApplicationsVo">
+        select application_id, pet_id, user_id, applicant_name, applicant_contact, applicant_address, applicant_age, application_date, pass_date, status from adoption_applications
+    </sql>
+
+    <select id="selectAdoptionApplicationsList" parameterType="AdoptionApplications" resultMap="AdoptionApplicationsResult">
+        <include refid="selectAdoptionApplicationsVo"/>
+        <where>  
+            <if test="petId != null "> and pet_id = #{petId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="applicantName != null  and applicantName != ''"> and applicant_name like concat('%', #{applicantName}, '%')</if>
+            <if test="applicantContact != null  and applicantContact != ''"> and applicant_contact = #{applicantContact}</if>
+            <if test="applicantAddress != null  and applicantAddress != ''"> and applicant_address = #{applicantAddress}</if>
+            <if test="applicantAge != null "> and applicant_age = #{applicantAge}</if>
+            <if test="applicationDate != null "> and application_date = #{applicationDate}</if>
+            <if test="passDate != null "> and pass_date = #{passDate}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectAdoptionApplicationsByApplicationId" parameterType="Long" resultMap="AdoptionApplicationsResult">
+        <include refid="selectAdoptionApplicationsVo"/>
+        where application_id = #{applicationId}
+    </select>
+
+    <insert id="insertAdoptionApplications" parameterType="AdoptionApplications" useGeneratedKeys="true" keyProperty="applicationId">
+        insert into adoption_applications
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="petId != null">pet_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="applicantName != null and applicantName != ''">applicant_name,</if>
+            <if test="applicantContact != null and applicantContact != ''">applicant_contact,</if>
+            <if test="applicantAddress != null and applicantAddress != ''">applicant_address,</if>
+            <if test="applicantAge != null">applicant_age,</if>
+            <if test="applicationDate != null">application_date,</if>
+            <if test="passDate != null">pass_date,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="petId != null">#{petId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="applicantName != null and applicantName != ''">#{applicantName},</if>
+            <if test="applicantContact != null and applicantContact != ''">#{applicantContact},</if>
+            <if test="applicantAddress != null and applicantAddress != ''">#{applicantAddress},</if>
+            <if test="applicantAge != null">#{applicantAge},</if>
+            <if test="applicationDate != null">#{applicationDate},</if>
+            <if test="passDate != null">#{passDate},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAdoptionApplications" parameterType="AdoptionApplications">
+        update adoption_applications
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="applicantName != null and applicantName != ''">applicant_name = #{applicantName},</if>
+            <if test="applicantContact != null and applicantContact != ''">applicant_contact = #{applicantContact},</if>
+            <if test="applicantAddress != null and applicantAddress != ''">applicant_address = #{applicantAddress},</if>
+            <if test="applicantAge != null">applicant_age = #{applicantAge},</if>
+            <if test="applicationDate != null">application_date = #{applicationDate},</if>
+            <if test="passDate != null">pass_date = #{passDate},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where application_id = #{applicationId}
+    </update>
+
+    <delete id="deleteAdoptionApplicationsByApplicationId" parameterType="Long">
+        delete from adoption_applications where application_id = #{applicationId}
+    </delete>
+
+    <delete id="deleteAdoptionApplicationsByApplicationIds" parameterType="String">
+        delete from adoption_applications where application_id in 
+        <foreach item="applicationId" collection="array" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </delete>
+</mapper>

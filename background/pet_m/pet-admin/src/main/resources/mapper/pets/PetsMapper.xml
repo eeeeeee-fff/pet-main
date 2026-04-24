@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ee.pets.mapper.PetsMapper">
+    
+    <resultMap type="Pets" id="PetsResult">
+        <result property="petId"    column="pet_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="name"    column="name"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="bodytype"    column="bodytype"    />
+        <result property="personality"    column="personality"    />
+        <result property="breed"    column="breed"    />
+        <result property="catOrDog"    column="cat_or_dog"    />
+        <result property="vaccination"    column="vaccination"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="adoptionInfo"    column="adoption_info"    />
+        <result property="status"    column="status"    />
+        <result property="monthMoney"    column="month_money"    />
+        <result property="cleanwithpet"    column="cleanwithpet"    />
+        <result property="environment"    column="environment"    />
+        <result property="energy"    column="energy"    />
+        <result property="hair"    column="hair"    />
+        <result property="score"    column="score"    />
+    </resultMap>
+
+    <sql id="selectPetsVo">
+        select pet_id, user_id, name, gender, age, bodytype, personality, breed, cat_or_dog, vaccination, image_url, adoption_info, status, month_money, cleanwithpet, environment, energy, hair, score from pets
+    </sql>
+
+    <select id="selectPetsList" parameterType="Pets" resultMap="PetsResult">
+        <include refid="selectPetsVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="breed != null  and breed != ''"> and breed like concat('%', #{breed}, '%')</if>
+            <if test="catOrDog != null  and catOrDog != ''"> and cat_or_dog = #{catOrDog}</if>
+            <if test="adoptionInfo != null  and adoptionInfo != ''"> and adoption_info = #{adoptionInfo}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectPetsByPetId" parameterType="Long" resultMap="PetsResult">
+        <include refid="selectPetsVo"/>
+        where pet_id = #{petId}
+    </select>
+
+    <insert id="insertPets" parameterType="Pets" useGeneratedKeys="true" keyProperty="petId">
+        insert into pets
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="bodytype != null">bodytype,</if>
+            <if test="personality != null">personality,</if>
+            <if test="breed != null">breed,</if>
+            <if test="catOrDog != null and catOrDog != ''">cat_or_dog,</if>
+            <if test="vaccination != null">vaccination,</if>
+            <if test="imageUrl != null">image_url,</if>
+            <if test="adoptionInfo != null">adoption_info,</if>
+            <if test="status != null">status,</if>
+            <if test="monthMoney != null">month_money,</if>
+            <if test="cleanwithpet != null">cleanwithpet,</if>
+            <if test="environment != null">environment,</if>
+            <if test="energy != null">energy,</if>
+            <if test="hair != null">hair,</if>
+            <if test="score != null">score,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="bodytype != null">#{bodytype},</if>
+            <if test="personality != null">#{personality},</if>
+            <if test="breed != null">#{breed},</if>
+            <if test="catOrDog != null and catOrDog != ''">#{catOrDog},</if>
+            <if test="vaccination != null">#{vaccination},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="adoptionInfo != null">#{adoptionInfo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="monthMoney != null">#{monthMoney},</if>
+            <if test="cleanwithpet != null">#{cleanwithpet},</if>
+            <if test="environment != null">#{environment},</if>
+            <if test="energy != null">#{energy},</if>
+            <if test="hair != null">#{hair},</if>
+            <if test="score != null">#{score},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePets" parameterType="Pets">
+        update pets
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="bodytype != null">bodytype = #{bodytype},</if>
+            <if test="personality != null">personality = #{personality},</if>
+            <if test="breed != null">breed = #{breed},</if>
+            <if test="catOrDog != null and catOrDog != ''">cat_or_dog = #{catOrDog},</if>
+            <if test="vaccination != null">vaccination = #{vaccination},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="adoptionInfo != null">adoption_info = #{adoptionInfo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="monthMoney != null">month_money = #{monthMoney},</if>
+            <if test="cleanwithpet != null">cleanwithpet = #{cleanwithpet},</if>
+            <if test="environment != null">environment = #{environment},</if>
+            <if test="energy != null">energy = #{energy},</if>
+            <if test="hair != null">hair = #{hair},</if>
+            <if test="score != null">score = #{score},</if>
+        </trim>
+        where pet_id = #{petId}
+    </update>
+
+    <delete id="deletePetsByPetId" parameterType="Long">
+        delete from pets where pet_id = #{petId}
+    </delete>
+
+    <delete id="deletePetsByPetIds" parameterType="String">
+        delete from pets where pet_id in 
+        <foreach item="petId" collection="array" open="(" separator="," close=")">
+            #{petId}
+        </foreach>
+    </delete>
+</mapper>

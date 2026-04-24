@@ -1,0 +1,72 @@
+  # 目录结构描述
+      目录结构描述 
+      ├── node-modules // 依赖安装包放置文件夹
+      ├── public // 存放静态资源文件夹，包含3D模型、html静态文件、.ico 图标文件
+      │  ├── model // 包含3D的obj、glb、fbx模型的文件夹
+      │  ├── favicon.ico// 包含3D的obj、glb、fbx模型的文件夹
+      │  └── index.html// 包含3D的obj、glb、fbx模型的文件夹
+      ├── src // 存放项目源代码主要位置的文件夹
+      │  ├── api// 存放API 前后端接口的文件夹
+      │  │  ├──AIDoc.js// 存放AI回答api接口文件
+            ...
+      │  │  └──pet.js// 存放宠物个体数据api接口文件
+      │  ├── assets// 包含图片、字体、图标的资源文件夹
+      │  ├── components// 包含图片、字体、图标的资源文件夹
+      │  │  ├──HeaderVue.vue// 网站导航栏组件文件，实现路由跳转功能
+      │  │  ├──PhotoFrame.vue// 宠物展示盒子组件文件，实现点击放大宠物图片功能
+      │  │  └──SIdentify.vue// 验证码组件文件，实现获取验证码、返回数据功能
+      │  ├── css // 包含多个布局样式规则css文件的文件夹
+      │  │  ├──BackGround.css// 图片背景css文件，实现图片展示效果和交互效果
+            ...
+      │  │  └──font.css// 图片背景css文件，实现图片展示效果和交互效果
+      │  ├── router// 存放路由文件的文件夹，承担着路由管理、代码组织、模块化和中间件应用等重要功能
+      │  │  ├──index.js// 路由配置文件，主要功能是定义应用的路由规则、处理路由导航守卫以及实现路由权限控制
+      │  ├── store// 使组件的状态集中存储，便于管理和维护的文件夹
+      │  │  ├──modules// 用于存放不同模块的状态的文件夹
+      │  │  │  ├──forum.js// 用于管理宠物论坛相关状态的模块文件
+      │  │  │  ├──knowledge.js// 用于管理存储宠物科普知识相关状态的模块文件
+      │  │  │  └──user.js// 用于管理应用中用户信息状态的模块文件
+      │  │  └─index.js// Vuex 存储的入口文件，负责创建和导出 store实例
+      │  ├── theme\element// 包含Element UI 组件库以及其他组件相关样式的文件夹
+      │  ├── utils
+      │  │  └──request.js//用于创建一个自定义的 Axios 实例，并为其添加请求拦截器和响应拦截器的文件
+      │  ├── views// 用于存放视图组件，这些组件负责定义用户界面的呈现和交互
+      │  │  ├── DetailVue.vue// 宠物详细页，实现宠物信息展示、领养申请以及 3D 模型展示的功能
+      │  │  ├── Display.vue//  开屏展示页，吸引用户并引导用户进一步探索网站功能
+      │  │  ├── Donate.vue//宠物捐赠页， 实现宠物捐赠表单，包含与捐赠相关的操作和信息展示功能
+      │  │  ├── ExamineVue.vue// 审核中心页，展示并切换用户的捐赠记录和申请记录
+      │  │  ├── ForumVue.vue// 宠物论坛页，实现用户在论坛中进行发帖、回帖、浏览帖子和参与问答等操作
+      │  │  ├── FrameVue.vue// 布局框架，用于布局以及一些页面需要HeaderVue的页面，统一管理页面的头部、主体内容区域和底部的展示
+      │  │  ├── HomeVue.vue// 首页，展示轮播图并介绍各个板块
+      │  │  ├── KnowledgeVue.vue// 宠物科普页，实现 AI 智能宠物医生在线咨询，同时展示宠物科普知识
+      │  │  ├── LoginVue.vue// 用户注册与登录页，实现表单验证、验证码获取、登录方式切换等功能
+      │  │  ├── MatchVue.vue// 智能匹配页，根据用户填写的宠物偏好信息，为用户推荐合适的宠物
+      │  │  ├── MessageVue.vue// 消息页
+      │  │  ├── PersonalVue.vue// 个人中心页，展示和编辑用户的个人信息以及管理用户的宠物信息
+      │  │  └── PetVue.vue// 宠物展示页，分类筛选和搜索功能，查找符合条件的可领养宠物，并展示宠物的相关信息
+      │  ├── App.vue// vue根组件
+      │  └── main.js// Vue 项目的入口文件，负责创建 Vue 应用实例，进行各种初始化配置和挂载操作
+# pet_house
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

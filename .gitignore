@@ -1,0 +1,43 @@
+# Maven 编译产物
+target/
+*.jar
+*.war
+
+# Node 依赖和构建产物
+node_modules/
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 日志
+*.log
+logs/
+
+# 本地环境变量
+.env.local
+.env.*.local
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 上传的图片（运行时产生的，preset 图片除外）
+users/pet_house-main/public/pet_imgs/*.png
+users/pet_house-main/public/pet_imgs/*.jpeg
+users/pet_house-main/public/pet_imgs/*.webp
+# 保留 preset 图片（c1/c2/c4/c5/c6/t1）
+!users/pet_house-main/public/pet_imgs/c1.jpg
+!users/pet_house-main/public/pet_imgs/c2.jpg
+!users/pet_house-main/public/pet_imgs/c4.jpg
+!users/pet_house-main/public/pet_imgs/c5.jpg
+!users/pet_house-main/public/pet_imgs/c6.jpg
+!users/pet_house-main/public/pet_imgs/t1.jpg
+!users/pet_house-main/public/pet_imgs/c7.jpg

@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'AlibabaPuHuiTi';
+    src: url('../assets/font-AlimamaShuHeiTi-bold/AlimamaShuHeiTi-Bold.ttf') format('truetype'),
+         url('../assets/font-AlimamaShuHeiTi-bold/AlimamaShuHeiTi-Bold.woff') format('woff'),
+         url('../assets/font-AlimamaShuHeiTi-bold/AlimamaShuHeiTi-Bold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap')
