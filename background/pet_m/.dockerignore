@@ -1,0 +1,15 @@
+**/target/
+.idea/
+*.iml
+.git/
+.gitignore
+.mvn/
+bin/
+doc/
+sql/
+pet-ui/
+*.md
+*.bat
+ry.sh
+Dockerfile
+.dockerignore
