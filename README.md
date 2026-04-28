@@ -20,6 +20,10 @@
 
 ### 💬 宠物社区论坛
 用户可分享养宠经验、发帖互动，配合评论系统构建活跃的宠物爱好者社区。
+<img width="1889" height="957" alt="image" src="https://github.com/user-attachments/assets/43df8a30-f9fa-4230-b569-712293bdc72e" />
+<img width="1893" height="945" alt="image" src="https://github.com/user-attachments/assets/29a45237-6f39-47c4-81e7-37d99b5cfea1" />
+
+
 
 ---
 
@@ -94,6 +98,11 @@ docker compose logs -f
 | 管理后台 | http://localhost:8082 | 管理员操作界面 |
 | 用户后端 API | http://localhost:8081 | |
 | 管理后端 API | http://localhost:8085 | |
+### 用户端账号
+
+| 账号 | 密码 |
+|------|------|
+| 1 | 123456 |
 
 ### 管理后台账号
 
