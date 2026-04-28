@@ -32,14 +32,13 @@
           <el-upload
             action='http://localhost:8081/head/img'
             :headers="{'pet':$store.state.user.userInfo.token}"
-            multiple
             :show-file-list="false"
             :on-success="handleSuccess"
             :on-progress="handleUploading"
             :on-error="handleError"
             :file-list="fileList">
-            <!--这个 file-list 是为了两个 el-upload 的文件预览显示能够同步
-            multiple 是为了用户多选图片
+            <!--这个 file-list 是为了两个 el-upload 的文件预览显示能够同步，
+            与宠物图片引用逻辑一致：单张图片
             -->
             <button class="upload">上传图片</button>
           </el-upload>
@@ -92,10 +91,8 @@
             {{postDetail.title}}
           </p>
           <pre class="content" v-html="postDetail.content"></pre>
-          <div class="img_wrapper">
-            <img src="https://img.js.design/assets/img/67a89f3a19abf04c14934af9.png#25e958d3b0667484f241bf9f1385a2dd" alt="">
-            <img src="https://img.js.design/assets/img/67a89f3a19abf04c14934af9.png#25e958d3b0667484f241bf9f1385a2dd" alt="">
-            <img src="https://img.js.design/assets/img/67a89f3a19abf04c14934af9.png#25e958d3b0667484f241bf9f1385a2dd" alt="">
+          <div class="img_wrapper" v-if="postDetail.imageUrl">
+            <img :src="$imageBaseUrl+postDetail.imageUrl" alt="">
           </div>
           <span class="time">
             发布于 {{postDetail.createTime}}
@@ -235,14 +232,13 @@
           <el-upload
             action='http://localhost:8081/head/img'
             :headers="{'pet':$store.state.user.userInfo.token}"
-            multiple
             list-type="picture-card"
             :on-success="handleSuccess"
             :on-progress="handleUploading"
             :on-error="handleError"
             :file-list="fileList">
-            <!-- file-list 是为了两个 el-upload 的文件预览显示能够同步
-            multiple 是为了用户能多选图片
+            <!-- file-list 是为了两个 el-upload 的文件预览显示能够同步，
+            与宠物图片引用逻辑一致：单张图片
             -->
             <i class="el-icon-plus"></i>
           </el-upload>
@@ -341,8 +337,7 @@ export default {
       questionIndex: 0, // 记录用户做到哪一题
       postTitle: '', // 发帖 标题
       postContent: '', // 发帖 内容
-      // postImageUrl: null, // 上传图片后，后端返回来的图片地址，用于发帖时的请求参数
-      postImageArr: [], // 储存后端返回来的图片地址，配合 postImageUrl(计算属性)
+      postImageUrl: '', // 上传图片后，后端返回来的图片地址，用于发帖时的请求参数
       postsList: [], // 帖子列表
       hotpost: [], // 热门帖子
       postDetail: [], // 帖子详情
@@ -364,8 +359,9 @@ export default {
         const res = await getPostInfo(id)
         this.postDetail = res.data
         this.postDetail.icon = this.postDetail.icon.replace(/^\[|\]$/g, '').trim()
-        const imgArr = this.postDetail.imageUrl.slice(1, -1).split(/\s*,\s*/).filter(Boolean)
-        this.postDetail.content += imgArr.map(str => `<img src="${this.$imageBaseUrl + str.replace(/^\[|\]$/g, '').trim()}"></img>`)
+        if (this.postDetail.imageUrl) {
+          this.postDetail.imageUrl = this.postDetail.imageUrl.replace(/^\[|\]$/g, '').trim()
+        }
       } catch (error) {
         console.log(error)
       }
@@ -408,13 +404,13 @@ export default {
       if (!this.postImageUrl) {
         this.$message('发帖中，该贴无图片')
       } else {
-        this.$message(`发帖中，该贴 ${this.postImageArr.length} 张图片`)
+        this.$message('发帖中，该贴包含图片')
       }
 
       // 发送请求
       try {
         const res = await publishPost(this.postContent, this.postTitle, this.postImageUrl)
-        this.postImageArr = [] // 清空图片
+        this.postImageUrl = '' // 清空图片
         this.fileList = []// 清空图片
         this.$message({
           type: 'success',
@@ -456,19 +452,19 @@ export default {
     handleSuccess (res, file) {
       if (res.code === 200) {
         // code为200，成功
-        // 这部分是处理返回的数据，与之前的数据进行整合（用户可能发送多张图片）
-        this.postImageArr.push(res.data.replace(/^\[|\]$/g, '').trim())
+        // 与宠物图片引用逻辑一致：保留单张图片URL（去除数组括号）
+        this.postImageUrl = res.data.replace(/^\[|\]$/g, '').trim()
 
-        // 这部分是为了页面那两个 el-upload 的文件预览显示能够同步
+        // 同步两个 el-upload 的文件预览显示
         // 不加延时器会有报错
         setTimeout(() => {
           const newFile = {
             name: file.name,
-            url: this.$imageBaseUrl + res.data.replace(/^\[|\]$/g, '').trim(),
+            url: this.$imageBaseUrl + this.postImageUrl,
             status: 'success',
             uid: file.uid
           }
-          this.fileList = [...this.fileList, newFile]
+          this.fileList = [newFile]
         }, 2000)
 
         // 提示信息
@@ -507,16 +503,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('forum', ['questionsList', 'resultPost']),
-
-    // 用于请求参数
-    postImageUrl () {
-      if (this.postImageArr.length) {
-        return JSON.stringify(this.postImageArr).replaceAll(/"/g, '')
-      } else {
-        return null
-      }
-    }
+    ...mapState('forum', ['questionsList', 'resultPost'])
   },
   async created () {
     try {
@@ -896,7 +883,7 @@ export default {
   }
   .left>.post_detail>.post_content>.content{
     width: 94%;
-    height: 63%;
+    max-height: 45%;
     font-size: 1.2625vw;
     padding: 0% 3% 0 3%;
     line-height: 120%;
@@ -907,13 +894,17 @@ export default {
     width: 100%;
   }
   .left>.post_detail>.post_content>.img_wrapper{
-    width: 100%;
+    width: 94%;
+    margin: 2% 3% 0 3%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
   .left>.post_detail>.post_content>.img_wrapper>img{
-    width: 30%;
+    max-width: 40%;
+    max-height: 22vh;
+    object-fit: cover;
+    border-radius: 8px;
   }
   .left>.post_detail>.post_content>.time{
     font-size: 1.11vw;

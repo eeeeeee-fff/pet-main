@@ -7,7 +7,6 @@ COPY pet-framework/pom.xml pet-framework/
 COPY pet-generator/pom.xml pet-generator/
 COPY pet-quartz/pom.xml pet-quartz/
 COPY pet-system/pom.xml pet-system/
-COPY pet-ui/pom.xml pet-ui/
 RUN mvn dependency:go-offline -q
 COPY . .
 RUN mvn clean package -DskipTests -pl pet-admin -am -q

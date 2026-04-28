@@ -83,6 +83,11 @@ public R<List<Forum>> selectforum(@RequestParam(required = false) String title){
     private void extracted(Forum forum) {
         int userId = forum.getUserId();
         Users user = usersMapper.selectuserbyid(userId);
+        if (user == null) {
+            forum.setIcon(null);
+            forum.setName("未知用户");
+            return;
+        }
         forum.setIcon(user.getIcon());
         forum.setName(user.getUsername());
     }

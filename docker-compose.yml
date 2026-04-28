@@ -23,7 +23,7 @@ services:
       retries: 10
 
   redis:
-    image: redis:7-alpine
+    image: redis
     container_name: pet-redis
     restart: unless-stopped
     ports:

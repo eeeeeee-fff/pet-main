@@ -8,9 +8,8 @@
 
     <router-view/>
 
-    <el-footer style="height: 35vh;background-color: black; border-radius: 20px;">
-      <p>掌灯星屿 声明：本网站所有内容版权归 掌灯星屿所有，未经授权禁止转载。</p>
-      <p>如侵权或涉及违法，请联系我们删除</p>
+    <el-footer style="height: 14vh;background-color: black; border-radius: 20px;">
+      <p>掌灯星屿 声明：本网站所有内容仅供学习使用。</p>
       <p>联系我们：958798069@qq.com</p>
       <p>本网站为纯公益网站</p>
     </el-footer>
@@ -34,16 +33,16 @@ export default {
     color: #333;
   }
   .el-footer {
-    color: rgb(74, 73, 73);
-    /* line-height: 60px; */
-    font-size: 1.919vw;
+    color: rgb(140, 140, 140);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1vh;
+    gap: 4px;
+    padding: 12px 20px;
   }
   .el-footer > p {
-    font-size: 25px;
+    font-size: 13px;
+    line-height: 1.5;
 }
 </style>

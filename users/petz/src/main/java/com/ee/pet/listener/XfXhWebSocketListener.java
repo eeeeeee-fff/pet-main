@@ -1,6 +1,5 @@
 package com.ee.pet.listener;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.ee.pet.entity.Dto.MsgDTO;
 import com.ee.pet.entity.Dto.ResponseDTO;
@@ -11,15 +10,11 @@ import okhttp3.WebSocketListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * @author fsq
- * @create 2023年10月27日12:08:40
- */
 @Slf4j
 public class XfXhWebSocketListener extends WebSocketListener {
     private StringBuilder answer = new StringBuilder();
-
     private boolean wsCloseFlag = false;
+    private String failureMessage;
 
     public StringBuilder getAnswer() {
         return answer;
@@ -29,49 +24,57 @@ public class XfXhWebSocketListener extends WebSocketListener {
         return wsCloseFlag;
     }
 
+    public String getFailureMessage() {
+        return failureMessage;
+    }
+
     @Override
     public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
         super.onOpen(webSocket, response);
+        log.info("XfXh websocket opened: code={}, message={}", response.code(), response.message());
     }
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
         super.onMessage(webSocket, text);
-        // 将大模型回复的 JSON 文本转为 ResponseDTO 对象
         ResponseDTO responseData = JSONObject.parseObject(text, ResponseDTO.class);
-        // 如果响应数据中的 header 的 code 值不为 0，则表示响应错误
         if (responseData.getHeader().getCode() != 0) {
-            // 日志记录
-            log.error("发生错误，错误码为：" + responseData.getHeader().getCode() + "; " + "信息：" + responseData.getHeader().getMessage());
-            // 设置回答
+            log.error("XfXh websocket business error: code={}, message={}",
+                    responseData.getHeader().getCode(),
+                    responseData.getHeader().getMessage());
             int code = responseData.getHeader().getCode();
             if (code == 10404 || code == 10003 || code == 10005) {
                 this.answer = new StringBuilder("请去配置文件中填写正确的大模型api");
             } else {
                 this.answer = new StringBuilder("大模型响应错误，请稍后再试");
             }
-            // 关闭连接标识
-            wsCloseFlag = true;
+            this.failureMessage = this.answer.toString();
+            this.wsCloseFlag = true;
             return;
         }
-        // 将回答进行拼接
+
         for (MsgDTO msgDTO : responseData.getPayload().getChoices().getText()) {
             this.answer.append(msgDTO.getContent());
         }
-        // 对最后一个文本结果进行处理
-        if (2 == responseData.getHeader().getStatus()) {
-            wsCloseFlag = true;
+
+        if (responseData.getHeader().getStatus() == 2) {
+            this.wsCloseFlag = true;
         }
     }
 
     @Override
     public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
         super.onFailure(webSocket, t, response);
+        String responseInfo = response == null ? "no http response" : ("code=" + response.code() + ", message=" + response.message());
+        this.failureMessage = "websocket failure: " + t.getMessage() + " (" + responseInfo + ")";
+        this.answer = new StringBuilder("大模型连接失败，请稍后再试");
+        this.wsCloseFlag = true;
+        log.error("XfXh websocket failure: {}", responseInfo, t);
     }
 
     @Override
     public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
         super.onClosed(webSocket, code, reason);
+        log.info("XfXh websocket closed: code={}, reason={}", code, reason);
     }
 }
-

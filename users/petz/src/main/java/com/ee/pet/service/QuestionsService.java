@@ -1,8 +1,8 @@
 package com.ee.pet.service;
 
 import com.ee.pet.common.R;
-import com.ee.pet.entity.Questions;
+import com.ee.pet.entity.Dto.Questionsdto;
 
 public interface QuestionsService {
-    R<Questions> selectquestion(int id);
+    R<Questionsdto> selectquestion(int id);
 }
